@@ -1,3 +1,4 @@
+/* eslint new-cap:0 */
 const router = require('express').Router();
 
 // When we have API routes, add them to the API like this:
