@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 // Static files come from the /public directory
 app.use(express.static(path.resolve(__dirname, '..', 'public')))
 
-
+// This catch-all route sends all requests to the index.html
 app.get('*', function (req, res, next) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
