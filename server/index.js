@@ -2,7 +2,7 @@ const morgan = require('morgan');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path')
-const {resolve} = require('path')
+// const {resolve} = require('path')
 
 const app = express();
 
@@ -10,11 +10,16 @@ const app = express();
 app.use(morgan('dev'));
 
 // Body parsing middleware.
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Mount the API routes
+const api = require('./api');
+app.use('/api', api);
 
 // Static files come from the /public directory
-app.use(express.static(path.resolve(__dirname, '..', 'public')))
+// app.use(express.static(path.resolve(__dirname, '..', 'public')))
+app.use(express.static(path.join(__dirname, '../public')));
 
 // This catch-all route sends all requests to the index.html
 app.get('*', function (req, res, next) {
