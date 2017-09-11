@@ -13,7 +13,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Static files come from the /public directory
-app.use(express.static(path.resolve(__dirname, '..', 'public')))
+// app.use(express.static(path.resolve(__dirname, '..', 'public')))
+
+
+app.get('*', function (req, res, next) {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
 
 // Start the server!
 const PORT = 1706;
