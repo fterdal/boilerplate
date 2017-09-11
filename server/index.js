@@ -1,38 +1,14 @@
-const morgan = require('morgan');
-const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path')
-// const {resolve} = require('path')
+const app = require('./app');
+const db = require('./db');
 
-const app = express();
-
-// Use morgan for logging
-app.use(morgan('dev'));
-
-// Body parsing middleware.
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// Mount the API routes
-const api = require('./api');
-app.use('/api', api);
-
-// Static files come from the /public directory
-app.use(express.static(path.join(__dirname, '../public')));
-
-// This catch-all route sends all requests to the index.html
-app.get('*', function (req, res, next) {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
-});
-
-app.use(function (err, req, res, next) {
-  console.error(err);
-  console.error(err.stack);
-  res.status(err.status || 500).send(err.message || 'Internal server error.');
-});
-
-// Start the server!
+// Sync the database
+const force = true;
 const PORT = process.env.PORT || 1706;
-app.listen(PORT, () => {
-  console.log(`Listening on Port ${PORT}!`);
-})
+db.sync({force})
+  .then( () => {
+
+    // Start the server!
+    app.listen(PORT, () => {
+      console.log(`Listening on Port ${PORT}!`);
+    })
+  })
